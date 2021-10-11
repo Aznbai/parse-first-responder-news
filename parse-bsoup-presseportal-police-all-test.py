@@ -7,26 +7,25 @@ URL = "https://www.presseportal.de/text/polizei"
 story_titles=""
 
 def randomSleep(minSeconds, maxSeconds):
-    sleeptime = random.uniform(minSeconds, maxSeconds)
-    print("waiting")
+    sleeptime = round(random.uniform(minSeconds, maxSeconds), 3)
+    print("waiting", end="")
     sleep(0.2)
-    for x in range(5):
+    for x in range(10):
         print(".", end="")
         sleep(0.2)
-    print("\n")
-    print("-------------------------------------------------------------------------------------------")
-    print("next request sceduled in: ", sleeptime, " seconds")
-    print("-------------------------------------------------------------------------------------------")
+    print("")
+    print("-------------------------------")
+    print("sceduling next request in: ", sleeptime, " seconds")
+    print("-------------------------------")
     sleep(sleeptime)
         
         
 def updateTeaserPage():
     ##load teasers of last stories
-    print("-------------------------------------------------------------------------------------------")
-    print("requesting data from: " + URL)
     teaserPage = requests.get(URL)
-    print("data loaded")
-    print("-------------------------------------------------------------------------------------------")
+    print("-------------------------------")
+    print("teaser story data succesfully loaded from: \n" + URL)
+    print("-------------------------------")
 
     soup = BeautifulSoup(teaserPage.content, "html.parser")
     resultsTeaser = soup.find(id="storylist")
@@ -48,16 +47,17 @@ def updateTeaserPage():
         
     ##print all teasers
     for idx, story_title in enumerate(story_titles):
-        print("-------------------------------------------------------------------------------------------")
-        print(story_title_urls[idx], sep = "\n")
+        print("-------------------------------")
         print(story_titles[idx], sep = "\n")
+        print("\n")
         print(story_teasers[idx], sep = "\n")
-        print("-------------------------------------------------------------------------------------------")
+        print("\n")
+        print(story_title_urls[idx], sep = "\n")
+        print("\n")
     ##load full text of the last story
-    print("-------------------------------------------------------------------------------------------")
-    print("the full story will be loaded after a timeout")
-    print("-------------------------------------------------------------------------------------------")
-
+    print("-------------------------------")
+    print("loading after full version of the most recent story after timeout")
+    print("-------------------------------")
     randomSleep(2,5)
     fullStoryPageURL = story_title_urls[0]
     fullStoryPage = requests.get(fullStoryPageURL)
@@ -72,11 +72,10 @@ def updateTeaserPage():
     for idx, fullStoryParagraph in enumerate(fullStoryParagraphs):
         fullStoryText = fullStoryText+fullStoryParagraph.text.strip()+ "\n"
     ##print full text of the last story
-    print("-------------------------------------------------------------------------------------------")
-    print(fullStoryTitle)
-    print("-------------------------------------------------------------------------------------------")
+    print("-------------------------------")
+    print(fullStoryTitle, sep = "\n \n")
     print(fullStoryText, sep = "\n")
-    print("-------------------------------------------------------------------------------------------")
+    print("-------------------------------")
     
 
 ##will run forever
